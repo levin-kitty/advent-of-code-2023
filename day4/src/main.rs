@@ -7,17 +7,40 @@ struct Game {
 }
 
 fn main() {
-    let games = read_games();
-    
+    let mut games = read_games();
+
+    /*
     let mut answer = 0;
     for game in games {
-        answer += score(&game.win_nums, &game.my_nums);
+        answer += score1(&game.win_nums, &game.my_nums);
+    }
+    */
+
+    let mut cards: Vec<i32> = vec![1; games.len()];
+    for (pos, game) in games.iter().enumerate() {
+        let m = pos + 1 + matched(&game.win_nums, &game.my_nums);
+        let mut i = pos + 1;
+        while i < m && i < games.len() {
+            println!("{}, {}", pos, i);
+            cards[i] += cards[pos];
+            i += 1;
+        }
     }
 
-    println!("{}", answer);
+    println!("{}", cards.iter().sum::<i32>());
 }
 
-fn score(win_nums :&HashSet<i32>, my_nums :&Vec<i32>) -> i32 {
+fn matched(win_nums :&HashSet<i32>, my_nums :&Vec<i32>) -> usize {
+    let mut matched = 0;
+    for n in my_nums {
+        if win_nums.contains(&n) {
+            matched += 1;
+        }
+    }
+    matched
+}
+
+fn score1(win_nums :&HashSet<i32>, my_nums :&Vec<i32>) -> i32 {
     let mut score = 0;
 
     for n in my_nums {
@@ -55,7 +78,7 @@ fn read_games() -> Vec<Game> {
         let my_nums_str = parts.next().unwrap_or_default().trim();
         let my_nums: Vec<i32> = my_nums_str.split_whitespace().filter_map(|s| s.parse().ok()).collect();
         
-        games.push( Game{
+        games.push(Game{
             win_nums: win_nums,
             my_nums: my_nums,
         });
