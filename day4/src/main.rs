@@ -7,7 +7,7 @@ struct Game {
 }
 
 fn main() {
-    let mut games = read_games();
+    let games = read_games();
 
     /*
     let mut answer = 0;
@@ -40,6 +40,7 @@ fn matched(win_nums :&HashSet<i32>, my_nums :&Vec<i32>) -> usize {
     matched
 }
 
+#[allow(dead_code)]
 fn score1(win_nums :&HashSet<i32>, my_nums :&Vec<i32>) -> i32 {
     let mut score = 0;
 
